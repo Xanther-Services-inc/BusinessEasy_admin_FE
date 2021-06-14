@@ -128,6 +128,13 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu, events }) => {
             Add FAQ
           </NavLink>
         </Menu.Item> : null }
+
+        { (isLoggedInJsonObject).type === 'super_user' || (isLoggedInJsonObject).type === 'super_user' || (isLoggedInJsonObject).type === 'super_user' ? 
+        <Menu.Item key="contact">
+          <NavLink onClick={toggleCollapsed} to={`${path}/contact-messages`}>
+            Contact Messages
+          </NavLink>
+        </Menu.Item> : null }
       
     
      

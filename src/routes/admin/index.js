@@ -28,7 +28,8 @@ const FaqDetails = lazy(() => import('../../container/FAQ/FaqDetails'))
 import TeamDetails from '../../container/pages/overview/TeamDetails'
 const Team = lazy(() => import('../../container/pages/Team'));
 const AddUser = lazy(() => import('../../container/pages/AddUsers'));
-
+const GetAllContactRequest = lazy(() => import('../../container/Contact/GetAllContactRequest'))
+const ContactMessageDetails = lazy(() => import('../../container/Contact/ContactMessageDetails'))
 
 
 
@@ -88,6 +89,8 @@ axios.interceptors.request.use(
         <Route path={`${path}/add-faq`} component={AddFaq} />
         <Route exact path={`${path}/faq`} component={Faqs} />
         <Route path={`${path}/faq/:id`} component={FaqDetails} />
+        <Route exact path={`${path}/contact-messages`} component={GetAllContactRequest} />
+        <Route path={`${path}/contact-message/:id`} component={ContactMessageDetails} />
 
 
         </> : isLoggedInJsonObject && ((isLoggedInJsonObject).type === 'b_manager')  ? 
@@ -102,6 +105,8 @@ axios.interceptors.request.use(
         <Route path="/admin/users/team/:email" component={TeamDetails} />
       <Route path={`${path}/users/team`} component={Team} />
       <Route path={`${path}/users/add-user`} component={AddUser} />
+      <Route exact path={`${path}/contact-messages`} component={GetAllContactRequest} />
+        <Route path={`${path}/contact-message/:id`} component={ContactMessageDetails} />
 
 
 
@@ -113,6 +118,8 @@ axios.interceptors.request.use(
         <Route path={`${path}/assigned-orders/:id`} component={AssignedProjects} />
         <Route path={`${path}/assigned-issues`} exact component={EmpIssues} />
         <Route path={`${path}/assigned-issues/:id`} component={EmpIssueDetails} />
+        <Route exact path={`${path}/contact-messages`} component={GetAllContactRequest} />
+        <Route path={`${path}/contact-message/:id`} component={ContactMessageDetails} />
 
         </> : <Error404 />
       }
