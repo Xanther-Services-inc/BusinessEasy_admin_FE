@@ -39,14 +39,13 @@ useEffect(() => {
     const fetchData = async () => {
 
        let {data} = await axios.get(`${process.env.REACT_APP_API}/api/v1/order?id=${match.params.id}`)
-      console.log('order details');
-      console.log(data);
+      
       setOrderDetails(data)
       }
       fetchData() 
     }, [])
 
-    const {firstName, lastName, zip, endDate, dueDate, startDate, status, email, doc_key, country, product_id, price, gender, state, city, emp_assigned, dob, id, phone, pan } = orderDetails
+    const {firstName, lastName, zip, endDate, dueDate, startDate, status, email, doc_key, country, product_id, price, payment, payment_id, gender, state, city, emp_assigned, dob, id, phone, pan } = orderDetails
  
     console.log(startDate);
     
@@ -109,6 +108,20 @@ useEffect(() => {
         console.log(err);
     }
 
+}
+
+const paymentStatusChange = async (e) => {
+  const {value} = e.target
+  
+
+  try{
+      const data = await axios.patch(`${process.env.REACT_APP_API}/api/v1/b_manager/payment-status`, {id: id, startDate: startDate, payment: value})
+      swal("Congrates!", "Successfully Changed Payment Status", "success")
+      window.location.reload()
+     
+  } catch(err) {
+      console.log(err);
+  }
 }
 
 const orderStatusChange = async (e) => {
@@ -231,6 +244,16 @@ const orderStatusChange = async (e) => {
                 <p>Order Id: {id}</p>
                   <p>Product: {product_id}</p>
                   <p>Price: 💰 {price}</p>
+                  <div>
+                    <p>Payment: {payment}</p>
+                    <span onClick={paymentStatusChange}>
+                      <select>
+                        <option key="Due" value="Due">Due</option>
+                        <option key="Paid" value="Paid">Paid</option>
+                      </select>
+                    </span>
+                  </div>
+                  <p>Payment Id: {payment_id || 'NA'}</p>
 
                 </div>
                 <span className="ordered-date" onClick={orderEmpAssign}>Assign employee: {emp_assigned} <br />
