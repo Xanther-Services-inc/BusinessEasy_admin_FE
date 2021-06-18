@@ -310,13 +310,13 @@ const ThemeLayout = WrappedComponent => {
                       <Col md={12} xs={24}>
                         <span className="admin-footer__copyright"></span>
                       </Col>
-                      <Col md={12} xs={24}>
+                      {/* <Col md={12} xs={24}>
                         <div className="admin-footer__links">
                           <NavLink to="#">About</NavLink>
                           <NavLink to="#">Team</NavLink>
                           <NavLink to="#">Contact</NavLink>
                         </div>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Footer>
                 </Content>
