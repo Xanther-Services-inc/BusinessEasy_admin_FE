@@ -77,7 +77,7 @@ const orderData = {
         label: "Order Count",
         data: finalOrderNumber,
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d']
+        backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
       }
     ]
 
@@ -110,13 +110,13 @@ const orderData = {
         label: "Total Amount",
         data: priceList,
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d','#38ef7d']
+        backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
       },
       {
         label: "Paid Amount",
         data: paidPriceList,
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#DCE35B','#DCE35B','#DCE35B','#DCE35B','#DCE35B','#DCE35B','#DCE35B']
+        backgroundColor: ['#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad']
       }
     ]
 
@@ -154,7 +154,7 @@ const orderData = {
     labels:["Paid", "Yet To Be Paid"],
     datasets:[{
      data: [paid, (totalRevenue-paid)],
-     backgroundColor: ["#38ef7d", "#f64f59"],
+     backgroundColor: ["#fff200", "#ff0000"],
      borderColor:'#fff',
      borderWidth: 1
     }]
