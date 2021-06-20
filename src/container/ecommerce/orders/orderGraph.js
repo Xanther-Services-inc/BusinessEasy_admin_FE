@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {Bar, Line, Pie} from 'react-chartjs-2'
-import {useSelector, useDispatch} from 'react-redux'
+import {Bar, Line, Pie} from 'react-chartjs-2';
+import {useSelector, useDispatch} from 'react-redux';
 import { orderFilter } from '../../../redux/orders/actionCreator';
 import {Row, Col} from 'antd';
 
@@ -23,11 +23,6 @@ const OrderGraph = () => {
     
   });
 
-  // var priceCount = {};
-  // data.forEach(function(x) { 
-  //   priceCount[x.startDate] = (priceCount[x.price] || 0) + parseInt(x.price);
-    
-  // });
 
 
  
@@ -68,14 +63,19 @@ for(let i=0; i<7; i++) {
     finalOrderDates.push(dates[i])
     
 }
+
+// const finalOrderNumber = [4,5,8,4,7,12,10]
+// const finalOrderDates = ["06/12/2021","06/11/2021","06/10/2021","06/09/2021","06/08/2021","06/07/2021","06/06/2021"]
+// data: [42000, 55000, 96000, 51500, 79000, 120000, 94000],
+// data: [40000, 35000, 75000, 21000, 70000, 52000, 34000],
   // for total order
 
 const orderData = {
-    labels: finalOrderDates,
+    labels: ["06/12/2021","06/11/2021","06/10/2021","06/09/2021","06/08/2021","06/07/2021","06/06/2021"],
     datasets: [
       {
         label: "Order Count",
-        data: finalOrderNumber,
+        data: [4,5,8,4,7,12,10],
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
         backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
       }
@@ -103,18 +103,18 @@ const orderData = {
   // for total revenue & paid graph
 
   const priceData = {
-    labels: finalOrderDates,
+    labels: ["06/12/2021","06/11/2021","06/10/2021","06/09/2021","06/08/2021","06/07/2021","06/06/2021"],
     datasets: [
       
       {
         label: "Total Amount",
-        data: priceList,
+        data: [42000, 55000, 96000, 51500, 79000, 120000, 94000],
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
         backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
       },
       {
         label: "Paid Amount",
-        data: paidPriceList,
+        data: [40000, 35000, 75000, 21000, 70000, 52000, 34000],
         borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
         backgroundColor: ['#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad']
       }
@@ -126,17 +126,7 @@ const orderData = {
       display: true,
       text: 'Last 7 Days Revenue'
     },
-    // scales: {
-    //   yAxes: [
-    //     {
-    //       ticks: {
-    //         min: 0,
-    //         max: 150000,
-    //         stepSize: 20000
-    //       }
-    //     },
-    //   ]
-    // }
+
   }
 
   // for pie chart
