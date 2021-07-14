@@ -29,7 +29,6 @@ const SignIn = () => {
 
   const handleSubmit = (data) => {
     dispatch(login(data.email, data.password));
-   
   };
 
   const onChange = checked => {
