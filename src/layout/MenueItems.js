@@ -97,6 +97,14 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu, events }) => {
           </NavLink>
         </Menu.Item>
       ) : null}
+      {isLoggedInJsonObject &&
+      (isLoggedInJsonObject.type === 'super_user' || isLoggedInJsonObject.type === 'b_manager') ? (
+        <Menu.Item key="orders-csv">
+          <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/orders-to-csv`}>
+            Export Order To CSV
+          </NavLink>
+        </Menu.Item>
+      ) : null}
       {isLoggedInJsonObject.type === 'super_user' ? (
         <Menu.Item>
           <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/ordersgraph`}>
@@ -128,7 +136,7 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu, events }) => {
       ) : null}
       {/* blog */}
       {isLoggedInJsonObject.type === 'super_user' ? (
-        <Menu.Item key="add-blog">
+        <Menu.Item key="all-blog">
           <NavLink onClick={toggleCollapsed} to={`${path}/blogs`}>
             Blogs
           </NavLink>

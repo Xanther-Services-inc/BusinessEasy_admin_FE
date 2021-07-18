@@ -24,11 +24,14 @@ const AddFaq = lazy(() => import('../../container/FAQ/AddFaq'));
 const Faqs = lazy(() => import('../../container/FAQ/Grid'));
 const FaqDetails = lazy(() => import('../../container/FAQ/FaqDetails'));
 import TeamDetails from '../../container/pages/overview/TeamDetails';
+
 const Team = lazy(() => import('../../container/pages/Team'));
 const AddUser = lazy(() => import('../../container/pages/AddUsers'));
 const GetAllContactRequest = lazy(() => import('../../container/Contact/GetAllContactRequest'));
 const ContactMessageDetails = lazy(() => import('../../container/Contact/ContactMessageDetails'));
 const CreateBlog = lazy(() => import('../../container/Blog/MailComposer'));
+const AllBlogs = lazy(() => import('../../container/Blog/AllBlogs'));
+const BlogDetails = lazy(() => import('../../container/Blog/BlogDetails'));
 
 const Admin = () => {
   const { path } = useRouteMatch();
@@ -84,6 +87,8 @@ const Admin = () => {
             <Route exact path={`${path}/contact-messages`} component={GetAllContactRequest} />
             <Route path={`${path}/contact-message/:id`} component={ContactMessageDetails} />
             <Route path={`${path}/create-blog`} component={CreateBlog} />
+            <Route path={`${path}/blogs`} component={AllBlogs} />
+            <Route path={`${path}/blog/:slug`} component={BlogDetails} />
           </>
         ) : isLoggedInJsonObject && isLoggedInJsonObject.type === 'b_manager' ? (
           <>
