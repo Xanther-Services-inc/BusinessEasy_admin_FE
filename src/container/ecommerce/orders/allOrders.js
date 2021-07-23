@@ -19,16 +19,15 @@ const Orders = () => {
   const { loading, data, err } = orderList;
 
   console.log(data);
-
+  const [orders, setOrders] = useState([]);
   useEffect(() => {
     dispatch(orderFilter());
     dispatch(orderStatusUpdate());
-    console.log(process.env.REACT_APP_API);
+    setOrders(data);
   }, [dispatch]);
 
   const history = useHistory();
 
-  const [orders, setOrders] = useState(data);
   console.log(orders);
 
   const filterItem = payment => {
