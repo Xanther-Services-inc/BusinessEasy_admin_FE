@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { orderFilter, orderStatusUpdate } from '../../../redux/orders/actionCreator';
 import OrderGraph from './orderGraph';
+
 // import Filter from './Filter';
 
 const GridCard = lazy(() => import('./GridCard.js'));
@@ -19,19 +20,21 @@ const Orders = () => {
   const { loading, data, err } = orderList;
 
   console.log(data);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState();
   useEffect(() => {
-    dispatch(orderFilter());
-    dispatch(orderStatusUpdate());
-    setOrders(data);
-  }, [dispatch]);
+    const fetchData = async () => {
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/orders`);
+      setOrders(data);
+    };
+    fetchData();
+  }, []);
 
   const history = useHistory();
 
   console.log(orders);
 
   const filterItem = payment => {
-    const filteredData = data.filter(order => {
+    const filteredData = orders.filter(order => {
       return order.payment === payment;
     });
     setOrders(filteredData);
@@ -46,7 +49,7 @@ const Orders = () => {
               <h1>All Orders</h1>
             </Col>
             <Col md={6}>
-              <Button type="primary" ghost onClick={() => setOrders(data)}>
+              <Button type="primary" ghost onClick={() => window.location.reload()}>
                 All
               </Button>
             </Col>
@@ -63,21 +66,20 @@ const Orders = () => {
           </Row>
           <br />
           <Row gutter={25}>
-            {orders.length !== 0
-              ? orders.map(order => (
-                  <Col key={order.id} xl={8} md={12} xs={24}>
-                    <Suspense
-                      fallback={
-                        <Cards style={{ border: '2px solid red' }}>
-                          <Skeleton active />
-                        </Cards>
-                      }
-                    >
-                      <GridCard values={order} />
-                    </Suspense>
-                  </Col>
-                ))
-              : null}
+            {orders &&
+              orders.map(order => (
+                <Col key={order.id} xl={8} md={12} xs={24}>
+                  <Suspense
+                    fallback={
+                      <Cards style={{ border: '2px solid red' }}>
+                        <Skeleton active />
+                      </Cards>
+                    }
+                  >
+                    <GridCard values={order} />
+                  </Suspense>
+                </Col>
+              ))}
           </Row>
         </Container>
       </Jumbotron>

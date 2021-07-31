@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProductCards from './ProductCards';
 import Heading from '../../../../components/heading/heading';
 import { PaginationWrapper, NotFoundWrapper } from '../../Style';
-import {allProducts} from '../../../../redux/product/actionCreator'
+import { allProducts } from '../../../../redux/product/actionCreator';
 
 const Grid = () => {
   // const { productsAll, isLoader } = useSelector(state => {
@@ -39,13 +39,14 @@ const Grid = () => {
     setState({ ...state, current, pageSize });
   };
 
-  const dispatch = useDispatch()
-  const productList = useSelector((state) => state.products)
-  const {loading, error, data} = productList
+  const dispatch = useDispatch();
+  const productList = useSelector(state => state.products);
+  const { loading, error, data } = productList;
+  console.log(data);
 
   useEffect(() => {
-    dispatch(allProducts())
-  }, [dispatch])
+    dispatch(allProducts());
+  }, [dispatch]);
 
   return (
     <Row gutter={30}>
@@ -56,10 +57,10 @@ const Grid = () => {
           </div>
         </Col>
       ) : data.length ? (
-        data.map(({ id, price, doc_key, title, desc }) => {
+        data.map(product => {
           return (
-            <Col xxl={6} lg={8} md={8} xs={24} key={id}>
-              <ProductCards product={{ id, price, title, doc_key, desc }} />
+            <Col xxl={6} lg={8} md={8} xs={24} key={product.id}>
+              <ProductCards product={product} />
             </Col>
           );
         })
@@ -70,7 +71,6 @@ const Grid = () => {
           </NotFoundWrapper>
         </Col>
       )}
-      
     </Row>
   );
 };

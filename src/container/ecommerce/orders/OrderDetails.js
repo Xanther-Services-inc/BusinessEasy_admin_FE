@@ -12,6 +12,7 @@ import axios from 'axios';
 import { Scrollbars } from 'react-custom-scrollbars';
 import swal from 'sweetalert';
 import Select from 'react-dropdown-select';
+var _ = require('lodash');
 
 const ProjectDetails = ({ match }) => {
   const userLogin = useSelector(state => state.auth);
@@ -37,37 +38,43 @@ const ProjectDetails = ({ match }) => {
     const fetchData = async () => {
       let { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/order?id=${match.params.id}`);
 
+      console.log(data);
       setOrderDetails(data);
     };
     fetchData();
   }, []);
 
-  const {
-    firstName,
-    lastName,
-    zip,
-    endDate,
-    dueDate,
-    startDate,
-    status,
-    email,
-    doc_key,
-    country,
-    product_id,
-    price,
-    payment,
-    payment_id,
-    gender,
-    state,
-    city,
-    emp_assigned,
-    dob,
-    id,
-    phone,
-    pan,
-  } = orderDetails;
+  // const {
+  //   firstName,
+  //   lastName,
+  //   zip,
+  //   endDate,
+  //   dueDate,
+  //   startDate,
+  //   status,
+  //   email,
+  //   doc_key,
+  //   country,
+  //   product_id,
+  //   price,
+  //   payment,
+  //   payment_id,
+  //   gender,
+  //   state,
+  //   city,
+  //   emp_assigned,
+  //   dob,
+  //   id,
+  //   phone,
+  //   pan,
+  // } = orderDetails;
 
-  console.log(startDate);
+  const { id, email, payment, price, status, startDate, emp_assigned, payment_id, product_id } = orderDetails;
+
+  const image = _.get(orderDetails, 'image');
+  const order_data = _.get(orderDetails, 'order_data');
+
+  console.log(image);
 
   const [messages, setMessages] = useState([]);
 
@@ -177,6 +184,14 @@ const ProjectDetails = ({ match }) => {
     }
   };
 
+  const details = [];
+  for (let [key, value] of Object.entries(order_data ? order_data : {})) {
+    details.push([key, value]);
+  }
+
+  console.log(order_data);
+
+  console.log(details);
   return (
     <ProjectDetailsWrapper>
       <Main>
@@ -185,56 +200,19 @@ const ProjectDetails = ({ match }) => {
             <Cards headless>
               <h3>Customer Details</h3>
               <hr />
+              <h4>Email: {email}</h4>
               <div className="state-single">
-                <div className="color-secondary">
-                  <FeatherIcon icon="user" size={25} />
-                </div>
                 <div>
-                  <h5>
-                    <strong>{firstName + ' ' + lastName + ' [' + gender + ']'}</strong>
-                  </h5>
-                </div>
-              </div>
-              <div className="state-single">
-                <div className="color-secondary">
-                  <FeatherIcon icon="map-pin" size={25} />
-                </div>
-
-                <div>
-                  <p>{city + ', ' + state + ', ' + zip + ', ' + country}</p>
-                </div>
-              </div>
-              <div className="state-single">
-                <div className="color-secondary">
-                  <FeatherIcon icon="credit-card" size={25} />
-                </div>
-
-                <div>
-                  <p>PAN: {pan}</p>
-                </div>
-              </div>
-              <div className="state-single">
-                <div className="color-warning">
-                  <FeatherIcon icon="calendar" size={25} />
-                </div>
-                <div>
-                  <p>{dob}</p>
-                </div>
-              </div>
-              <div className="state-single">
-                <div className="color-warning">
-                  <FeatherIcon icon="at-sign" size={25} />
-                </div>
-                <div>
-                  <p>{email}</p>
-                </div>
-              </div>
-              <div className="state-single">
-                <div className="color-warning">
-                  <FeatherIcon icon="phone" size={25} />
-                </div>
-                <div>
-                  <p>{phone}</p>
+                  <h3>
+                    {details &&
+                      details.map(item => {
+                        return (
+                          <h4>
+                            {item[0]}: {item[1]}
+                          </h4>
+                        );
+                      })}
+                  </h3>
                 </div>
               </div>
             </Cards>
@@ -289,22 +267,22 @@ const ProjectDetails = ({ match }) => {
                   <Select options={arr} onChange={orderEmpAssign} style={{ width: 300, left: 0, right: 0 }} />
                 </span>
                 <div className="about-project">
-                  <div>
+                  {/* <div>
                     <span>Ordered by</span>
                     <p>{firstName + ' ' + lastName}</p>
-                  </div>
-                  <div>
+                  </div> */}
+                  {/* <div>
                     <span>Due Date</span>
                     <p>{dueDate || 'NA'}</p>
-                  </div>
+                  </div> */}
                   <div>
                     <span>Start Date</span>
                     <p className="color-primary">{startDate}</p>
                   </div>
-                  <div>
+                  {/* <div>
                     <span>Deadline</span>
                     <p className="color-danger">{endDate || 'NA'}</p>
-                  </div>
+                  </div> */}
                   <div>
                     <span>Status</span>
                     <p className="color-danger">{status}</p>
@@ -326,7 +304,7 @@ const ProjectDetails = ({ match }) => {
               <div>
                 <h3>Attached Documents</h3>
 
-                {doc_key ? doc_key.map(doc => <FileListCard key={doc} doc={doc} />) : []}
+                {image ? image.map(doc => <FileListCard key={doc} doc={doc} />) : []}
               </div>
               {/* new */}
               <Cards title="Conversations">
