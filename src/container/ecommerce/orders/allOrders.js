@@ -14,31 +14,36 @@ import OrderGraph from './orderGraph';
 const GridCard = lazy(() => import('./GridCard.js'));
 
 const Orders = () => {
-  const dispatch = useDispatch();
-  const orderList = useSelector(state => state.orders);
+  // const dispatch = useDispatch();
+  // const orderList = useSelector(state => state.orders);
 
-  const { loading, data, err } = orderList;
+  // const { loading, data, err } = orderList;
 
-  console.log(data);
-  const [orders, setOrders] = useState();
+  // console.log(data);
+  const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/orders`);
       setOrders(data);
+      setFilteredOrders(data);
     };
     fetchData();
   }, []);
 
-  const history = useHistory();
+  // const history = useHistory();
 
   console.log(orders);
 
   const filterItem = payment => {
-    const filteredData = orders.filter(order => {
+    const filteredData = filteredOrders.filter(order => {
       return order.payment === payment;
     });
     setOrders(filteredData);
   };
+
+  // const a = filterItem('Due');
+  // console.log(a);
 
   return (
     <div>
@@ -49,7 +54,7 @@ const Orders = () => {
               <h1>All Orders</h1>
             </Col>
             <Col md={6}>
-              <Button type="primary" ghost onClick={() => window.location.reload()}>
+              <Button type="primary" ghost onClick={() => setOrders(filteredOrders)}>
                 All
               </Button>
             </Col>
