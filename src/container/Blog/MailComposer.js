@@ -39,18 +39,6 @@ const MailComposer = ({ onChange, onSend, defaultTag, replay, text }) => {
   const titleHandle = e => {
     setState({ ...state, title: e.target.value });
   };
-  // async function fetchData() {
-  //   const { data } = await axios.post(
-  //     'http://localhost:3001/api/v1/blog/create',
-  //     state.title,
-  //     state.author,
-  //     state.doc_key
-  //     )
-  //   setState({fetchData:data})
-  // }
-  // useEffect(() => {
-  //   fetchData()
-  // }, [])
 
   const onSubmit = async () => {
     const res = await axios({
@@ -70,16 +58,8 @@ const MailComposer = ({ onChange, onSend, defaultTag, replay, text }) => {
       )
       .catch(error => console.log(error));
 
-    // window.location.reload()
     window.location.reload();
   };
-  // useEffect(() => {
-  //   if(state.fetchData === 'done'){
-  //     swal({
-  //       icon: "success"
-  //     })
-  //   }
-  // }, [])
 
   const props = {
     name: 'image',
@@ -109,35 +89,37 @@ const MailComposer = ({ onChange, onSend, defaultTag, replay, text }) => {
 
   return (
     <MailBox>
-      <div className="body">
+      <div className="body" style={{ height: '100%' }}>
         {!text && (
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="group">
             <div className="reply-inner" style={{ display: 'flex', alignItems: 'center' }}>
-              {/* {!replay ? null : <span className="reply-title">Replay To</span>}
-              <TagsInput
-                inputProps={{
-                  placeholder: replay ? null : 'To',
-                }}
-                value={state.tags}
-                onChange={handleChange}
-              /> */}
-              <input type="text" placeholder="title" value={state.title} onChange={titleHandle} />
+              <input
+                style={{ padding: '1rem', width: '50vw', border: '3px solid #f2f2f2', margin: '1rem' }}
+                type="text"
+                placeholder="Blog Title"
+                value={state.title}
+                onChange={titleHandle}
+              />
             </div>
           </div>
         )}
         <div className="group">
-          <RichTextEditor placeholder="Type your message..." value={state.desc} onChange={onChanges} />
-          <input type="text" placeholder="Author" value={state.author} onChange={authorHandle} />
+          <RichTextEditor placeholder="Type your Content..." value={state.desc} onChange={onChanges} />
+          <input
+            type="text"
+            placeholder="Author"
+            value={state.author}
+            onChange={authorHandle}
+            style={{ padding: '1rem', margin: '1rem', border: '3px solid #c2c2c2' }}
+          />
         </div>
-        <div className="left d-flex align-items-center">
+        <div className="left d-flex align-items-center" style={{ padding: '1rem', marginLeft: '2rem' }}>
           <Link to="#">
+            <p style={{ color: '#000' }}>Upload Blog Image..</p>
             <Upload {...props}>
               {/* <FeatherIcon icon="paperclip" size={16} /> */}
               <Button icon={<UploadOutlined />}>Upload</Button>
             </Upload>
-          </Link>
-          <Link to="#">
-            <FeatherIcon icon="alert-circle" size={16} />
           </Link>
         </div>
       </div>
@@ -154,10 +136,6 @@ const MailComposer = ({ onChange, onSend, defaultTag, replay, text }) => {
                 Send
               </Button>
             )}
-
-            {/* <Link to="#">
-              <FeatherIcon icon="trash-2" size={16} />
-            </Link> */}
           </div>
         </div>
       )}

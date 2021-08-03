@@ -60,35 +60,6 @@ const AddProduct = () => {
     window.location.reload();
   };
 
-  // const [form] = Form.useForm();
-
-  // const [fileName, setFileName] = useState('');
-
-  // const onChangeFile = e => {
-  //   setFileName(e.target.files[0]);
-  //   console.log(e);
-  // };
-
-  // const handleSubmit = async values => {
-  //   var fd = new FormData();
-  //   fd.append('title', values.title);
-  //   fd.append('price', values.price);
-  //   fd.append('desc', values.desc);
-  //   fd.append('image', fileName);
-
-  //   const config = {
-  //     headers: { 'content-type': 'multipart/form-data' },
-  //   };
-  //   const url = `${process.env.REACT_APP_API}/api/v1/product/create`;
-
-  //   const proData = await Axios.post(url, fd, config)
-  //     .then(response => console.log(response))
-  //     .catch(error => console.log(error));
-  //   swal('Congratulation!', 'Product Added Successfully', 'success');
-
-  //   window.location.reload();
-  // };
-
   return (
     <>
       <Main>
@@ -117,9 +88,9 @@ const AddProduct = () => {
                                     label="Price"
                                     rules={[{ required: true, message: 'Missing Price' }]}
                                   >
-                                    <div className="input-prepend-wrap">
-                                      <InputNumber style={{ width: '100%' }} />
-                                    </div>
+                                    {/* <div className="input-prepend-wrap"> */}
+                                    <InputNumber style={{ width: '100%' }} />
+                                    {/* </div> */}
                                   </Form.Item>
                                   <Form.Item
                                     name="desc"
@@ -129,64 +100,67 @@ const AddProduct = () => {
                                     <Input.TextArea rows={5} />
                                   </Form.Item>
                                   <Upload {...props}>
+                                    <span>Product Image: </span>
                                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
                                   </Upload>{' '}
                                   {/* test  */}
-                                  <Form.List name="users">
-                                    {(fields, { add, remove }) => (
-                                      <>
-                                        {fields.map(({ key, name, fieldKey, ...restField }) => (
-                                          <Space
-                                            key={key}
-                                            style={{ display: 'flex', marginBottom: 8 }}
-                                            align="baseline"
-                                          >
-                                            <Form.Item
-                                              {...restField}
-                                              name={[name, 'formType']}
-                                              fieldKey={[fieldKey, 'formType']}
-                                              rules={[{ required: true, message: 'Missing Options' }]}
+                                  <Cards title="Add Form Fields">
+                                    <Form.List name="users">
+                                      {(fields, { add, remove }) => (
+                                        <>
+                                          {fields.map(({ key, name, fieldKey, ...restField }) => (
+                                            <Space
+                                              key={key}
+                                              style={{ display: 'flex', marginBottom: 8 }}
+                                              align="baseline"
                                             >
-                                              {/* <Input placeholder="First Name" /> */}
-                                              <Select style={{ width: 120 }} onChange={handleSelect}>
-                                                <Option value="textInp">Text Input</Option>
-                                                <Option value="imgField">Image field</Option>
-                                                <Option value="numberInp">Number Input</Option>
-                                                <Option value="select">Dropdown</Option>
-                                                <Option value="date">Date Picker</Option>
-                                              </Select>
-                                            </Form.Item>
-                                            <Form.Item
-                                              {...restField}
-                                              name={[name, 'label']}
-                                              fieldKey={[fieldKey, 'label']}
-                                              rules={[{ required: true, message: 'Missing Label' }]}
-                                            >
-                                              <Input placeholder="label" />
-                                            </Form.Item>
-                                            {/* test */}
-                                            {selectEl ? (
                                               <Form.Item
                                                 {...restField}
-                                                name={[name, 'options']}
-                                                fieldKey={[fieldKey, 'options']}
+                                                name={[name, 'formType']}
+                                                fieldKey={[fieldKey, 'formType']}
+                                                rules={[{ required: true, message: 'Missing Options' }]}
                                               >
-                                                {/* <Text disabled>Type the Options with comma (,) separated..</Text> */}
-                                                <Input placeholder="Options" />
+                                                {/* <Input placeholder="First Name" /> */}
+                                                <Select style={{ width: 120 }} onChange={handleSelect}>
+                                                  <Option value="textInp">Text Input</Option>
+                                                  <Option value="imgField">Document Uploader</Option>
+                                                  <Option value="numberInp">Number Input</Option>
+                                                  <Option value="select">Dropdown</Option>
+                                                  <Option value="date">Date Picker</Option>
+                                                </Select>
                                               </Form.Item>
-                                            ) : null}
-                                            {/* test */}
-                                            <MinusCircleOutlined onClick={() => remove(name)} />
-                                          </Space>
-                                        ))}
-                                        <Form.Item>
-                                          <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                            Add field
-                                          </Button>
-                                        </Form.Item>
-                                      </>
-                                    )}
-                                  </Form.List>
+                                              <Form.Item
+                                                {...restField}
+                                                name={[name, 'label']}
+                                                fieldKey={[fieldKey, 'label']}
+                                                rules={[{ required: true, message: 'Missing Label' }]}
+                                              >
+                                                <Input placeholder="label" />
+                                              </Form.Item>
+                                              {/* test */}
+                                              {selectEl ? (
+                                                <Form.Item
+                                                  {...restField}
+                                                  name={[name, 'options']}
+                                                  fieldKey={[fieldKey, 'options']}
+                                                >
+                                                  {/* <Text disabled>Type the Options with comma (,) separated..</Text> */}
+                                                  <Input placeholder="Options" />
+                                                </Form.Item>
+                                              ) : null}
+                                              {/* test */}
+                                              <MinusCircleOutlined onClick={() => remove(name)} />
+                                            </Space>
+                                          ))}
+                                          <Form.Item>
+                                            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                              Add field
+                                            </Button>
+                                          </Form.Item>
+                                        </>
+                                      )}
+                                    </Form.List>
+                                  </Cards>
                                   <Form.Item>
                                     <Button type="primary" htmlType="submit">
                                       Submit

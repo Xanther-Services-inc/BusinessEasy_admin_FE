@@ -5,6 +5,7 @@ import { Button } from '../../components/buttons/buttons';
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 import swal from 'sweetalert';
+import './BlogDetails.css';
 
 const BlogDetails = () => {
   const { slug } = useParams();
@@ -18,6 +19,8 @@ const BlogDetails = () => {
     fetchData();
   }, [slug]);
   const { id, doc_key, author, title, desc } = blog;
+
+  console.log(desc);
 
   //   const handleDelete = e => {
   //     e.preventDefault();
@@ -43,25 +46,38 @@ const BlogDetails = () => {
   //   };
   return (
     <div className="product-details-box__right pdbr">
-      <Heading className="pdbr__title" as="h2">
-        {title}
-      </Heading>
-
-      <p className="pdbr__currency">
-        Author:<span className="pdbr__price"> [{author}] </span>
-      </p>
-
       <Row>
         <Col
-          md={{ span: 10, offset: 7 }}
+          style={{ paddingTop: '2rem' }}
+          md={{ span: 16, offset: 4 }}
           sm={{ span: 20, offset: 2 }}
-          lg={{ span: 8, offset: 8 }}
-          xl={{ span: 8, offset: 7 }}
+          lg={{ span: 16, offset: 4 }}
+          xl={{ span: 16, offset: 4 }}
         >
+          <Heading className="pdbr__title title" as="h1">
+            {title}
+          </Heading>
+
+          <p className="pdbr__currency" style={{ textAlign: 'center' }}>
+            Author:<span className="pdbr__price"> [{author}] </span>
+          </p>
+        </Col>
+        <Col
+          md={{ span: 12, offset: 6 }}
+          sm={{ span: 20, offset: 2 }}
+          lg={{ span: 12, offset: 6 }}
+          xl={{ span: 12, offset: 6 }}
+        >
+          <hr />
+
+          <br />
           <Image
-            style={{ cursor: 'pointer', height: '12rem', width: '20rem' }}
+            style={{ cursor: 'pointer', height: '16vh', width: '20vw' }}
             src={`https://businesseasy-blog.s3.us-east-2.amazonaws.com/${doc_key}`}
           />
+          <br />
+          <br />
+          <hr />
         </Col>
         <Col offset={2} />
         <Col
@@ -71,7 +87,7 @@ const BlogDetails = () => {
           xl={{ span: 16, offset: 4 }}
         >
           <p className="pdbr__desc">
-            <u>Content:</u> <div dangerouslySetInnerHTML={{ __html: desc }} />
+            <div dangerouslySetInnerHTML={{ __html: desc }} />
           </p>
         </Col>
       </Row>

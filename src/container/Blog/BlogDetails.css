@@ -1,0 +1,30 @@
+p img {
+  height: 20rem;
+  width: 32rem;
+  margin: 1rem 0 0 10vw;
+  height: auto;
+  transition: transform ease-in-out 0.3s;
+}
+p img:hover {
+  transform: scale(1.2);
+}
+
+p:first-child img {
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.7rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+}
