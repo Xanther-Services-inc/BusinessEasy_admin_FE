@@ -99,6 +99,13 @@ const AddProduct = () => {
                                   >
                                     <Input.TextArea rows={5} />
                                   </Form.Item>
+                                  <Form.Item
+                                    name="steps"
+                                    label="Steps"
+                                    rules={[{ required: true, message: 'Missing Steps to Complete' }]}
+                                  >
+                                    <Input />
+                                  </Form.Item>
                                   <Upload {...props}>
                                     <span>Product Image: </span>
                                     <Button icon={<UploadOutlined />}>Click to Upload</Button>

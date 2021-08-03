@@ -11,7 +11,9 @@ const DetailsRight = ({ product }) => {
   const title = _.get(product, 'values.title');
   const price = _.get(product, 'values.price');
   const desc = _.get(product, 'values.desc');
-  console.log(title);
+  const steps = _.get(product, 'values.steps');
+  const new_steps = steps.replace(/ /g, '').split(',');
+  console.log(new_steps);
 
   return (
     <div className="product-details-box__right pdbr">

@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Form, Input, Button, Progress, Spin } from 'antd';
+import { Row, Col, Form, Input, Button, Progress, Spin, Steps } from 'antd';
 import FeatherIcon from 'feather-icons-react';
 import { Link, NavLink, Switch, Route } from 'react-router-dom';
 import propTypes from 'prop-types';
@@ -13,6 +13,8 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import swal from 'sweetalert';
 import Select from 'react-dropdown-select';
 var _ = require('lodash');
+
+const { Step } = Steps;
 
 const ProjectDetails = ({ match }) => {
   const userLogin = useSelector(state => state.auth);
@@ -69,12 +71,23 @@ const ProjectDetails = ({ match }) => {
   //   pan,
   // } = orderDetails;
 
-  const { id, email, payment, price, status, startDate, emp_assigned, payment_id, product_id } = orderDetails;
+  const {
+    id,
+    email,
+    payment,
+    price,
+    status,
+    startDate,
+    emp_assigned,
+    payment_id,
+    product_id,
+    order_steps,
+  } = orderDetails;
 
   const image = _.get(orderDetails, 'image');
   const order_data = _.get(orderDetails, 'order_data');
 
-  console.log(image);
+  console.log(orderDetails);
 
   const [messages, setMessages] = useState([]);
 
@@ -267,22 +280,11 @@ const ProjectDetails = ({ match }) => {
                   <Select options={arr} onChange={orderEmpAssign} style={{ width: 300, left: 0, right: 0 }} />
                 </span>
                 <div className="about-project">
-                  {/* <div>
-                    <span>Ordered by</span>
-                    <p>{firstName + ' ' + lastName}</p>
-                  </div> */}
-                  {/* <div>
-                    <span>Due Date</span>
-                    <p>{dueDate || 'NA'}</p>
-                  </div> */}
                   <div>
                     <span>Start Date</span>
                     <p className="color-primary">{startDate}</p>
                   </div>
-                  {/* <div>
-                    <span>Deadline</span>
-                    <p className="color-danger">{endDate || 'NA'}</p>
-                  </div> */}
+
                   <div>
                     <span>Status</span>
                     <p className="color-danger">{status}</p>
@@ -294,12 +296,13 @@ const ProjectDetails = ({ match }) => {
                       />
                     </span>
                   </div>
-                  {/* <br />
-                  <div>
-                    <span>Assigned Employee</span>
-                    <p className="color-danger">{emp_assigned || 'NA'}</p>
-                  </div> */}
                 </div>
+                <Steps size="small" current={2}>
+                  {order_steps &&
+                    order_steps.map(step => {
+                      return <Step title={step} />;
+                    })}
+                </Steps>
               </Cards>
               <div>
                 <h3>Attached Documents</h3>
