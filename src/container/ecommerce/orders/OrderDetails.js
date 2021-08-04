@@ -46,37 +46,12 @@ const ProjectDetails = ({ match }) => {
     fetchData();
   }, []);
 
-  // const {
-  //   firstName,
-  //   lastName,
-  //   zip,
-  //   endDate,
-  //   dueDate,
-  //   startDate,
-  //   status,
-  //   email,
-  //   doc_key,
-  //   country,
-  //   product_id,
-  //   price,
-  //   payment,
-  //   payment_id,
-  //   gender,
-  //   state,
-  //   city,
-  //   emp_assigned,
-  //   dob,
-  //   id,
-  //   phone,
-  //   pan,
-  // } = orderDetails;
-
   const {
     id,
     email,
     payment,
     price,
-    status,
+    order_status,
     startDate,
     emp_assigned,
     payment_id,
@@ -175,11 +150,22 @@ const ProjectDetails = ({ match }) => {
   };
 
   // OrderStatus change select options
-  const statusOptions = [
-    { value: 'Pending', label: 'Pending' },
-    { value: 'In Progress', label: 'In Progress' },
-    { value: 'Completed', label: 'Completed' },
-  ];
+  const statusOptions = [];
+
+  order_steps &&
+    order_steps.map(step => {
+      return statusOptions.push({
+        value: step,
+        label: step,
+      });
+    });
+
+  console.log(statusOptions);
+  // const statusOptions = [
+  //   { value: 'Pending', label: 'Pending' },
+  //   { value: 'In Progress', label: 'In Progress' },
+  //   { value: 'Completed', label: 'Completed' },
+  // ];
 
   const handleOrderStatusChange = async values => {
     // console.log(values[0].value);
@@ -287,7 +273,7 @@ const ProjectDetails = ({ match }) => {
 
                   <div>
                     <span>Status</span>
-                    <p className="color-danger">{status}</p>
+                    <p className="color-danger">{order_status}</p>
                     <span>
                       <Select
                         style={{ width: 150, left: -100, right: 0 }}
@@ -297,12 +283,14 @@ const ProjectDetails = ({ match }) => {
                     </span>
                   </div>
                 </div>
-                <Steps size="small" current={2}>
+                {/* Order Steps  */}
+                <Steps size="small" current={order_steps && order_steps.indexOf(order_status)}>
                   {order_steps &&
                     order_steps.map(step => {
                       return <Step title={step} />;
                     })}
                 </Steps>
+                {/* Order Steps  */}
               </Cards>
               <div>
                 <h3>Attached Documents</h3>
