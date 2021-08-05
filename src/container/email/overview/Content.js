@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import FeatherIcon from 'feather-icons-react';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import propTypes from 'prop-types';
@@ -10,13 +10,12 @@ import Heading from '../../../components/heading/heading';
 
 import Axios from 'axios';
 
-import {Button} from 'antd'
-import ComposeMail from '../overview/Compose'
-
+import { Button } from 'antd';
+import ComposeMail from '../overview/Compose';
 
 const Content = () => {
   // const userLogin = useSelector((state)=> state.userLogin)
-	// const {loading, error,isAuth, userInfo} = userLogin
+  // const {loading, error,isAuth, userInfo} = userLogin
   const [isMailEditorOpen, setMailEditorStatus] = useState(false);
   const toggleMailComposer = () => {
     setMailEditorStatus(!isMailEditorOpen);
@@ -49,11 +48,10 @@ const Content = () => {
     setMailEditorStatus(false);
   };
 
-  
   const dispatch = useDispatch();
   const [state, setState] = useState({
     selectedRowKeys: [],
-   
+
     sort: true,
     issues: [],
     responsive: 0,
@@ -62,19 +60,19 @@ const Content = () => {
   const { selectedRowKeys, notData, emails, sort, issues } = state;
 
   useEffect(() => {
-    const fetchData = async() =>{
-      const {data} = await Axios.get(`${process.env.REACT_APP_API}/api/v1/issue/all-issues`);
+    const fetchData = async () => {
+      const { data } = await Axios.get(`${process.env.REACT_APP_API}/api/v1/issue/all-issues`);
       setState({
         ...state,
         issues: data,
-      })
-    }
+      });
+    };
 
-    fetchData()
+    fetchData();
   }, []);
 
   console.log(issues);
-  
+
   const data = [];
   if (issues !== undefined)
     issues.map((item, key) => {
@@ -83,56 +81,48 @@ const Content = () => {
       return data.push({
         // key: id,
         // name: (
-        //   <EmailAuthor>            
+        //   <EmailAuthor>
         //     <Heading as="h5">
-              
+
         //       <Link>Emp Assigned: [<strong>{employee}</strong>]</Link>
         //     </Heading>
         //   </EmailAuthor>
         // ),
-       
+
         id: (
-          
           <EmailAuthor>
             <Heading as="h5">
-            
-              <Link to={`/admin/issue/single/${id}`}><strong>{id}</strong></Link>
+              <Link to={`/admin/issue/single/${id}`}>
+                <strong>{id}</strong>
+              </Link>
             </Heading>
-            
-           
           </EmailAuthor>
         ),
         email: (
-          
           <EmailAuthor>
             <Heading as="h5">
-            
-              <Link to={`/admin/issue/single/${id}`}><strong>{user_email}</strong></Link>
+              <Link to={`/admin/issue/single/${id}`}>
+                <strong>{user_email}</strong>
+              </Link>
             </Heading>
-            
-           
           </EmailAuthor>
         ),
         emp: (
-          
           <EmailAuthor>
             <Heading as="h5">
-            
-              <Link to={`/admin/issue/single/${id}`}><strong>{employee}</strong></Link>
+              <Link to={`/admin/issue/single/${id}`}>
+                <strong>{employee}</strong>
+              </Link>
             </Heading>
-            
-           
           </EmailAuthor>
         ),
         title: (
-          
           <EmailHeader>
             <Heading as="h5">
-            
-              <Link to={`/admin/issue/single/${id}`}><strong>{title}</strong></Link>
+              <Link to={`/admin/issue/single/${id}`}>
+                <strong>{title}</strong>
+              </Link>
             </Heading>
-            
-           
           </EmailHeader>
         ),
       });
@@ -203,27 +193,26 @@ const Content = () => {
     //   dataIndex: 'name',
     // },
     {
-      title: "Issue Id",
+      title: 'Issue Id',
       dataIndex: 'id',
     },
     {
-      title: "Issue Title",
+      title: 'Issue Title',
       dataIndex: 'title',
     },
     {
-      title: "User Email",
+      title: 'User Email',
       dataIndex: 'email',
     },
     {
-      title: "Employee Assigned",
+      title: 'Employee Assigned',
       dataIndex: 'emp',
     },
   ];
 
   return (
     <>
-   
-   {/* {responsive > 991 ? (<Button onClick={toggleMailComposer} style={{position: 'relative', left: '75rem'}} shape="round" type="primary" size="default">
+      {/* {responsive > 991 ? (<Button onClick={toggleMailComposer} style={{position: 'relative', left: '75rem'}} shape="round" type="primary" size="default">
                         <FeatherIcon icon="plus" size={18} /> Issue
                       </Button>) : (<div className="mail-sidebar-top">
                       <Button onClick={toggleMailComposer} shape="round" type="primary" size="default" block>
@@ -232,15 +221,15 @@ const Content = () => {
                     </div>
                       )}
                       {isMailEditorOpen && <ComposeMail close={closeMailComposr} />} */}
-    <Style
-      className="table-responsive"
-      pagination={false}
-      // rowSelection={rowSelection}
-      columns={columns}
-      dataSource={data}
-      onChange={handleChange}
-    />
-    {/* <Footer1 /> */}
+      <Style
+        className="table-responsive"
+        pagination={false}
+        // rowSelection={rowSelection}
+        columns={columns}
+        dataSource={data}
+        onChange={handleChange}
+      />
+      {/* <Footer1 /> */}
     </>
   );
 };

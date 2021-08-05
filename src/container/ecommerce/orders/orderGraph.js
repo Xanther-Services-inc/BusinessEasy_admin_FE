@@ -1,86 +1,78 @@
-import React, {useEffect} from 'react';
-import {Bar, Line, Pie} from 'react-chartjs-2';
-import {useSelector, useDispatch} from 'react-redux';
+import React, { useEffect } from 'react';
+import { Bar, Line, Pie } from 'react-chartjs-2';
+import { useSelector, useDispatch } from 'react-redux';
 import { orderFilter } from '../../../redux/orders/actionCreator';
-import {Row, Col} from 'antd';
-
+import { Row, Col } from 'antd';
+import ExportToCSV from './ExportToCSV';
 
 const OrderGraph = () => {
-    const dispatch = useDispatch()
-  const orderList = useSelector((state) => state.orders)
+  const dispatch = useDispatch();
+  const orderList = useSelector(state => state.orders);
 
-  const {loading, data, err} = orderList
+  const { loading, data, err } = orderList;
 
   useEffect(() => {
     dispatch(orderFilter());
-  
   }, [dispatch]);
 
-
   var counts = {};
-  data.forEach(function(x) { 
-    counts[x.startDate] = (counts[x.startDate] || 0)+1;
-    
+  data.forEach(function(x) {
+    counts[x.startDate] = (counts[x.startDate] || 0) + 1;
   });
 
-
-
- 
-  const dates = []
-  const values = []
+  const dates = [];
+  const values = [];
 
   for (const [key, value] of Object.entries(counts)) {
-    dates.push(key)
-    values.push(value)
-}
-let priceList = []
-let price = 0;
-let paidPriceList = []
-let paidPrice = 0
-dates.forEach(date => {
-  data.forEach(item => {
-    if(item.startDate === date) {
-      price += parseInt(item.price)
-    }
-    if(item.startDate === date && item.payment === 'Paid') {
-      paidPrice += parseInt(item.price)
-    }
-  })
-  paidPriceList.push(paidPrice)
-  paidPrice = 0
-  priceList.push(price)
-  price = 0
-})
+    dates.push(key);
+    values.push(value);
+  }
+  let priceList = [];
+  let price = 0;
+  let paidPriceList = [];
+  let paidPrice = 0;
+  dates.forEach(date => {
+    data.forEach(item => {
+      if (item.startDate === date) {
+        price += parseInt(item.price);
+      }
+      if (item.startDate === date && item.payment === 'Paid') {
+        paidPrice += parseInt(item.price);
+      }
+    });
+    paidPriceList.push(paidPrice);
+    paidPrice = 0;
+    priceList.push(price);
+    price = 0;
+  });
 
-console.log(paidPrice);
-console.log(paidPriceList);
-console.log(priceList);
+  console.log(paidPrice);
+  console.log(paidPriceList);
+  console.log(priceList);
 
-  const finalOrderNumber = []
-  const finalOrderDates = []
-for(let i=0; i<7; i++) {
-    finalOrderNumber.push(values[i])
-    finalOrderDates.push(dates[i])
-    
-}
+  const finalOrderNumber = [];
+  const finalOrderDates = [];
+  for (let i = 0; i < 7; i++) {
+    finalOrderNumber.push(values[i]);
+    finalOrderDates.push(dates[i]);
+  }
   // for total order
 
-const orderData = {
+  const orderData = {
     labels: finalOrderDates,
     datasets: [
       {
-        label: "Order Count",
+        label: 'Order Count',
         data: finalOrderNumber,
-        borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
-      }
-    ]
-
-  }
+        borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
+        backgroundColor: ['#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06'],
+      },
+    ],
+  };
   const orderOptions = {
     title: {
       display: true,
-      text: 'Last 7 Days Order'
+      text: 'Last 7 Days Order',
     },
     scales: {
       yAxes: [
@@ -88,81 +80,84 @@ const orderData = {
           ticks: {
             min: 0,
             max: 20,
-            stepSize: 2
-          }
+            stepSize: 2,
+          },
         },
-      ]
-    }
-  }
+      ],
+    },
+  };
 
   // for total revenue & paid graph
 
   const priceData = {
     labels: finalOrderDates,
     datasets: [
-      
       {
-        label: "Total Amount",
+        label: 'Total Amount',
         data: priceList,
-        borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06','#00ad06']
+        borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
+        backgroundColor: ['#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06'],
       },
       {
-        label: "Paid Amount",
+        label: 'Paid Amount',
         data: paidPriceList,
-        borderColor: ['#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00','#ff6f00'],
-        backgroundColor: ['#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad','#0300ad']
-      }
-    ]
-
-  }
+        borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
+        backgroundColor: ['#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad'],
+      },
+    ],
+  };
   const priceOptions = {
     title: {
       display: true,
-      text: 'Last 7 Days Revenue'
+      text: 'Last 7 Days Revenue',
     },
-
-  }
+  };
 
   // for pie chart
 
-  let totalRevenue = 0
-  let paid = 0
+  let totalRevenue = 0;
+  let paid = 0;
   data.forEach(order => {
-    totalRevenue += parseInt(order.price)
-    if(order.payment === 'Paid') {
-      paid += parseInt(order.price)
+    totalRevenue += parseInt(order.price);
+    if (order.payment === 'Paid') {
+      paid += parseInt(order.price);
     }
-  })
+  });
 
   const pieData = {
-    labels:["Paid", "Yet To Be Paid"],
-    datasets:[{
-     data: [paid, (totalRevenue-paid)],
-     backgroundColor: ["#fff200", "#ff0000"],
-     borderColor:'#fff',
-     borderWidth: 1
-    }]
+    labels: ['Paid', 'Yet To Be Paid'],
+    datasets: [
+      {
+        data: [paid, totalRevenue - paid],
+        backgroundColor: ['#fff200', '#ff0000'],
+        borderColor: '#fff',
+        borderWidth: 1,
+      },
+    ],
   };
 
-    return (
-        <>
-        <Row gutter={16}>
-          <Col className="gutter-row" span={12} style={{border: "1px dashed #b8b8b8"}}>
-            {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Order Graph</h1> */}
-            <Bar height={200} data={orderData} options={orderOptions} />
-          </Col>
-          <Col className="gutter-row" span={12} style={{border: "1px dashed #b8b8b8"}}>
+  return (
+    <>
+      <Row gutter={16}>
+        <Col className="gutter-row" span={12} style={{ border: '1px dashed #b8b8b8' }}>
+          {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Order Graph</h1> */}
+          <Bar height={200} data={orderData} options={orderOptions} />
+        </Col>
+        <Col className="gutter-row" span={12} style={{ border: '1px dashed #b8b8b8' }}>
           {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Revenue Graph</h1> */}
-        <Bar height={200} data={priceData} options={priceOptions} />
-          </Col>
-          <Col className="gutter-row" span={24} style={{border: "1px dashed #b8b8b8"}}>
+          <Bar height={200} data={priceData} options={priceOptions} />
+        </Col>
+        <Col className="gutter-row" span={24} style={{ border: '1px dashed #b8b8b8' }}>
           {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Revenue Chart</h1> */}
-        <Pie height={200} data={pieData} height="100%" />
-          </Col>
-        </Row>
-        </>
-    )
-}
+          <Pie height={200} data={pieData} height="100%" />
+          <br />
+        </Col>
+      </Row>
+      <br />
+
+      <ExportToCSV />
+    </>
+  );
+};
 
 export default OrderGraph;

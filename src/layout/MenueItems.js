@@ -108,7 +108,7 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu, events }) => {
       {isLoggedInJsonObject.type === 'super_user' ? (
         <Menu.Item>
           <NavLink onClick={toggleCollapsed} to={`${path}/ecommerce/ordersgraph`}>
-            Orders Graph
+            Orders Statistics
           </NavLink>
         </Menu.Item>
       ) : null}

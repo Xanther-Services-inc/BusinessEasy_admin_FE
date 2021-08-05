@@ -10,17 +10,9 @@ import { PageHeader } from '../../components/page-headers/page-headers';
 // import { Cards } from '../../components/cards/frame/cards-frame';
 import { Main } from '../styled';
 import { Button } from '../../components/buttons/buttons';
-// import { ShareButtonPageHeader } from '../../components/buttons/share-button/share-button';
-// import { ExportButtonPageHeader } from '../../components/buttons/export-button/export-button';
-// import { CalendarButtonPageHeader } from '../../components/buttons/calendar-button/calendar-button';
+import axios from 'axios';
 
 const Inbox = lazy(() => import('./overview/Inbox'));
-const Sent = lazy(() => import('./overview/Sent'));
-const Draft = lazy(() => import('./overview/Draft'));
-const Starred = lazy(() => import('./overview/Starred'));
-const Trash = lazy(() => import('./overview/Trash'));
-const Spam = lazy(() => import('./overview/Spam'));
-const MailDetailView = lazy(() => import('./overview/MailDetailView'));
 
 const Email = ({ match }) => {
   const [isMailEditorOpen, setMailEditorStatus] = useState(false);
@@ -58,6 +50,12 @@ const Email = ({ match }) => {
 
   const pathName = path.split(':')[0];
 
+  const handleCSV = async id => {
+    const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/issue/export-issues-csv`);
+    // console.log(data.message);
+    window.location.href = data.message;
+  };
+
   return (
     <>
       <PageHeader
@@ -75,6 +73,9 @@ const Email = ({ match }) => {
           </div>,
         ]}
       />
+      <Button style={{ display: 'flex', left: '74vw', margin: '10px 0' }} type="primary" onClick={handleCSV}>
+        Export
+      </Button>
       {isMailEditorOpen && <ComposeMail close={closeMailComposr} />}
 
       <Main>

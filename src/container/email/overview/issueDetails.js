@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Progress, Spin } from 'antd';
+import { Row, Col, Progress, Spin, Button } from 'antd';
 import FeatherIcon from 'feather-icons-react';
 import { Link, NavLink, Switch, Route } from 'react-router-dom';
 import propTypes from 'prop-types';
@@ -48,24 +48,36 @@ const IssueDetails = ({ match }) => {
     ? empList.map(emp => arr.push({ value: emp.email, label: emp.email }))
     : [{ value: 'No Emp', label: 'No Emp' }];
 
+  const [emp, setEmp] = useState('NA');
+
   const issueEmpAssign = async values => {
+    setEmp(values[0].value);
+  };
+
+  const handleEmpAssign = async () => {
     try {
       const data = await axios.patch(`${process.env.REACT_APP_API}/api/v1/issue/update`, {
         id: id,
-        employee: values[0].value,
+        employee: emp,
       });
       swal('Congrates!', 'Successfully Assigned Employee', 'success');
       window.location.reload();
-      //     console.log(id);
-      // console.log(value);
-      // console.log(startDate);
     } catch (err) {
       console.log(err);
     }
   };
 
+  // Export to csv file
+  const handleCSV = async id => {
+    const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/issue/export-single-issue?id=${id}`);
+    window.location.href = data.msg;
+  };
+
   return (
     <ProjectDetailsWrapper>
+      <Button style={{ display: 'flex', left: '70vw', margin: '10px 0' }} type="primary" onClick={() => handleCSV(id)}>
+        Export
+      </Button>
       <Main>
         <Row gutter={25}>
           <Col xxl={20} md={24} xl={24} xs={24}>
@@ -100,11 +112,18 @@ const IssueDetails = ({ match }) => {
                     <p>{issue_category}</p>
                   </div>
                   <div>
-                    <span>
-                      Assigned Employee --
-                      <Select options={arr} onChange={issueEmpAssign} style={{ width: 250, left: -100, right: 0 }} />
-                    </span>
+                    <span>Assigned Employee --</span>
                     <p>{employee || 'NA'}</p>
+                    <Select options={arr} onChange={issueEmpAssign} style={{ width: 250, left: -100, right: 0 }} />
+                    {emp !== 'NA' ? (
+                      <Button style={{ marginTop: '4px' }} onClick={handleEmpAssign} type="primary">
+                        Change
+                      </Button>
+                    ) : (
+                      <Button style={{ marginTop: '4px' }} type="primary" disabled>
+                        Change
+                      </Button>
+                    )}
                   </div>
                 </div>
               </Cards>

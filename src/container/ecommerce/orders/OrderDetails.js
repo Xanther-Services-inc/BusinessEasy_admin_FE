@@ -100,7 +100,7 @@ const ProjectDetails = ({ match }) => {
 
   const rightMessage = {
     textAlign: 'right',
-    paddingRight: '10px',
+    paddingRight: '1rem',
   };
 
   const leftMessage = {
@@ -115,12 +115,18 @@ const ProjectDetails = ({ match }) => {
     ? empList.map(emp => arr.push({ value: emp.email, label: emp.email }))
     : [{ value: 'No Emp', label: 'No Emp' }];
 
+  // State for Emp
+  const [emp, setEmp] = useState('NA');
   const orderEmpAssign = async values => {
+    setEmp(values[0].value);
+  };
+
+  const handleOrderEmpAssign = async () => {
     try {
       const data = await axios.patch(`${process.env.REACT_APP_API}/api/v1/b_manager/emp-assign`, {
         id: id,
         startDate: startDate,
-        employee: values[0].value,
+        employee: emp,
       });
       swal('Congrates!', 'Successfully Assigned Employee', 'success');
       window.location.reload();
@@ -135,12 +141,17 @@ const ProjectDetails = ({ match }) => {
     { value: 'Paid', label: 'Paid' },
   ];
 
+  const [paymentStatus, setPaymentStatus] = useState('NA');
   const paymentStatusChange = async values => {
+    setPaymentStatus(values[0].value);
+  };
+
+  const handlePaymentStatus = async () => {
     try {
       const data = await axios.patch(`${process.env.REACT_APP_API}/api/v1/b_manager/payment-status`, {
         id: id,
         startDate: startDate,
-        payment: values[0].value,
+        payment: paymentStatus,
       });
       swal('Congrates!', 'Successfully Changed Payment Status', 'success');
       window.location.reload();
@@ -167,14 +178,18 @@ const ProjectDetails = ({ match }) => {
   //   { value: 'Completed', label: 'Completed' },
   // ];
 
-  const handleOrderStatusChange = async values => {
-    // console.log(values[0].value);
+  const [OrderStatus, setOrderStatus] = useState('');
 
+  const handleOrderStatusChange = async values => {
+    setOrderStatus(values[0].value);
+  };
+
+  const handleOrderStatus = async () => {
     try {
       const data = await axios.patch(`${process.env.REACT_APP_API}/api/v1/b_manager/order-status`, {
         id: id,
         startDate: startDate,
-        status: values[0].value,
+        status: OrderStatus,
       });
       swal('Congrates!', 'Successfully Changed Order Status', 'success');
       window.location.reload();
@@ -191,8 +206,19 @@ const ProjectDetails = ({ match }) => {
   console.log(order_data);
 
   console.log(details);
+
+  // Export to csv file
+  const handleCSV = async id => {
+    const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/order/export-single-order?id=${id}`);
+    window.location.href = data.msg;
+  };
+
   return (
     <ProjectDetailsWrapper>
+      <Button style={{ display: 'flex', left: '70vw', margin: '10px 0' }} type="primary" onClick={() => handleCSV(id)}>
+        Export
+      </Button>
+
       <Main>
         <Row gutter={25}>
           <Col xxl={6} xl={8} xs={24}>
@@ -239,6 +265,41 @@ const ProjectDetails = ({ match }) => {
               </Form>
             </Cards>
             {/* new */}
+            {/* new */}
+            <Cards title="Conversations">
+              <Scrollbars
+                style={{
+                  width: '21rem',
+                  height: '20rem',
+                  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                }}
+              >
+                {messages.map(message => (
+                  <>
+                    <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
+                      <div>
+                        <p style={{ color: '#0a8dff' }}>@{message.user}</p>
+                        {message.message !== 'undefined' ? <p>{message.message}</p> : null}
+
+                        {message.doc_key !== 'sample.jpg' ? (
+                          <Link
+                            to={{ pathname: `https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}` }}
+                            target="_blank"
+                          >
+                            <img
+                              src={`https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}`}
+                              style={{ height: '7rem', width: '60%' }}
+                            ></img>
+                          </Link>
+                        ) : null}
+                      </div>
+                    </div>
+                    <br />
+                  </>
+                ))}
+              </Scrollbars>
+            </Cards>
+            {/* new */}
           </Col>
           <Col xxl={12} xl={16} xs={24}>
             <div className="about-project-wrapper">
@@ -256,6 +317,15 @@ const ProjectDetails = ({ match }) => {
                         style={{ width: 150, left: 0, right: 0 }}
                       />
                     </span>
+                    {paymentStatus !== 'NA' ? (
+                      <Button style={{ marginTop: '4px' }} onClick={handlePaymentStatus} type="primary">
+                        Change
+                      </Button>
+                    ) : (
+                      <Button style={{ marginTop: '4px' }} type="primary" disabled>
+                        Change
+                      </Button>
+                    )}
                   </div>
                   <p>Payment Id: {payment_id || 'NA'}</p>
                 </div>
@@ -264,6 +334,15 @@ const ProjectDetails = ({ match }) => {
                 </span>
                 <span>
                   <Select options={arr} onChange={orderEmpAssign} style={{ width: 300, left: 0, right: 0 }} />
+                  {emp !== 'NA' ? (
+                    <Button style={{ marginTop: '4px' }} onClick={handleOrderEmpAssign} type="primary">
+                      Assign
+                    </Button>
+                  ) : (
+                    <Button style={{ marginTop: '4px' }} type="primary" disabled>
+                      Assign
+                    </Button>
+                  )}
                 </span>
                 <div className="about-project">
                   <div>
@@ -281,6 +360,15 @@ const ProjectDetails = ({ match }) => {
                         onChange={handleOrderStatusChange}
                       />
                     </span>
+                    {OrderStatus ? (
+                      <Button style={{ marginTop: '4px' }} onClick={handleOrderStatus} type="primary">
+                        Change
+                      </Button>
+                    ) : (
+                      <Button style={{ marginTop: '4px' }} type="primary" disabled>
+                        Change
+                      </Button>
+                    )}
                   </div>
                 </div>
                 {/* Order Steps  */}
@@ -297,41 +385,6 @@ const ProjectDetails = ({ match }) => {
 
                 {image ? image.map(doc => <FileListCard key={doc} doc={doc} />) : []}
               </div>
-              {/* new */}
-              <Cards title="Conversations">
-                <Scrollbars
-                  style={{
-                    width: 500,
-                    height: 300,
-                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                  }}
-                >
-                  {messages.map(message => (
-                    <>
-                      <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
-                        <div>
-                          <p style={{ color: '#0a8dff' }}>@{message.user}</p>
-                          {message.message !== 'undefined' ? <h5>{message.message}</h5> : null}
-
-                          {message.doc_key !== 'sample.jpg' ? (
-                            <Link
-                              to={{ pathname: `https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}` }}
-                              target="_blank"
-                            >
-                              <img
-                                src={`https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}`}
-                                style={{ height: '7rem', width: '60%' }}
-                              ></img>
-                            </Link>
-                          ) : null}
-                        </div>
-                      </div>
-                      <br />
-                    </>
-                  ))}
-                </Scrollbars>
-              </Cards>
-              {/* new */}
             </div>
           </Col>
         </Row>
