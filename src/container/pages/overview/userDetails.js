@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 import FeatherIcon from 'feather-icons-react';
 import propTypes from 'prop-types';
 import { ProjectDetailsWrapper, ProjectCard } from '../../ecommerce/orders/style';
@@ -37,7 +37,7 @@ const UserDetails = ({ match }) => {
       let { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/user/user-details-orders?email=${match.params.email}`,
       );
-      console.log('asdasd', data);
+
       setUserOrders(data);
     };
     fetchOrders();
@@ -51,8 +51,19 @@ const UserDetails = ({ match }) => {
     return [date.getFullYear(), mnth, day].join('-');
   };
 
+  // Export to csv file
+  const handleCSV = async id => {
+    const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/user/export-single-user`, {
+      user_type,
+      email,
+    });
+    window.location.href = data.msg;
+  };
   return (
     <ProjectDetailsWrapper>
+      <Button style={{ display: 'flex', left: '70vw', margin: '10px 0' }} type="primary" onClick={handleCSV}>
+        Export
+      </Button>
       <Main>
         <Row gutter={25}>
           <Col xxl={24} xl={24} xs={24} style={{ textAlign: 'center' }}>
