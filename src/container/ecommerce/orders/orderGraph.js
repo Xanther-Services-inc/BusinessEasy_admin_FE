@@ -1,24 +1,63 @@
-import React, { useEffect } from 'react';
-import { Bar, Line, Pie } from 'react-chartjs-2';
-import { useSelector, useDispatch } from 'react-redux';
-import { orderFilter } from '../../../redux/orders/actionCreator';
-import { Row, Col } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Bar, Pie } from 'react-chartjs-2';
+import axios from 'axios';
+import { Row, Col, DatePicker } from 'antd';
 import ExportToCSV from './ExportToCSV';
 
-const OrderGraph = () => {
-  const dispatch = useDispatch();
-  const orderList = useSelector(state => state.orders);
+const { RangePicker } = DatePicker;
 
-  const { loading, data, err } = orderList;
+const OrderGraph = () => {
+  const [dateOne, setDateOne] = useState();
+  const [dateTwo, setDateTwo] = useState();
+
+  const handleChange = e => {
+    // const date = new Date()
+    const data1 = new Date(e[0]._d);
+
+    const data2 = new Date(e[1]._d);
+    let day1 = String(data1.getDate()).padStart(2, '0');
+    let day2 = String(data2.getDate()).padStart(2, '0');
+    let month1 = String(data1.getMonth() + 1).padStart(2, '0');
+    let month2 = String(data2.getMonth() + 1).padStart(2, '0');
+    let year1 = data1.getFullYear();
+    let year2 = data2.getFullYear();
+
+    let sDate = month1 + '/' + day1 + '/' + year1;
+    let eDate = month2 + '/' + day2 + '/' + year2;
+    setDateOne(sDate);
+    setDateTwo(eDate);
+  };
+
+  console.log(dateOne);
+  console.log(dateTwo);
+
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    dispatch(orderFilter());
-  }, [dispatch]);
+    const defaultData = async () => {
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/orders`);
+      setOrders(data);
+    };
+    defaultData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/order/get-orders-btn-dates?startDate=${dateOne}&endDate=${dateTwo}`,
+      );
+      setOrders(data);
+    };
+    fetchData();
+  }, [dateOne, dateTwo]);
+  console.log(orders);
 
   var counts = {};
-  data.forEach(function(x) {
+  orders.forEach(function(x) {
     counts[x.startDate] = (counts[x.startDate] || 0) + 1;
   });
+
+  console.log(counts);
 
   const dates = [];
   const values = [];
@@ -27,43 +66,18 @@ const OrderGraph = () => {
     dates.push(key);
     values.push(value);
   }
-  let priceList = [];
-  let price = 0;
-  let paidPriceList = [];
-  let paidPrice = 0;
-  dates.forEach(date => {
-    data.forEach(item => {
-      if (item.startDate === date) {
-        price += parseInt(item.price);
-      }
-      if (item.startDate === date && item.payment === 'Paid') {
-        paidPrice += parseInt(item.price);
-      }
-    });
-    paidPriceList.push(paidPrice);
-    paidPrice = 0;
-    priceList.push(price);
-    price = 0;
-  });
 
-  console.log(paidPrice);
-  console.log(paidPriceList);
-  console.log(priceList);
+  console.log(dates);
+  console.log(values);
 
-  const finalOrderNumber = [];
-  const finalOrderDates = [];
-  for (let i = 0; i < 7; i++) {
-    finalOrderNumber.push(values[i]);
-    finalOrderDates.push(dates[i]);
-  }
   // for total order
 
   const orderData = {
-    labels: finalOrderDates,
+    labels: dates,
     datasets: [
       {
         label: 'Order Count',
-        data: finalOrderNumber,
+        data: values,
         borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
         backgroundColor: ['#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06'],
       },
@@ -72,7 +86,7 @@ const OrderGraph = () => {
   const orderOptions = {
     title: {
       display: true,
-      text: 'Last 7 Days Order',
+      text: 'Total Orders',
     },
     scales: {
       yAxes: [
@@ -87,20 +101,46 @@ const OrderGraph = () => {
     },
   };
 
-  // for total revenue & paid graph
+  //   For total amount
+  var totalSell = {};
+  orders.forEach(function(x) {
+    totalSell[x.startDate] = (totalSell[x.startDate] || 0) + parseInt(x.price);
+  });
+
+  console.log(totalSell);
+  const totalPrice = [];
+  for (const [key, value] of Object.entries(totalSell)) {
+    totalPrice.push(value);
+  }
+
+  console.log(totalPrice);
+
+  const totalPaid = {};
+  orders.forEach(function(x) {
+    if (x.payment === 'Paid') {
+      totalPaid[x.startDate] = (totalPaid[x.startDate] || 0) + parseInt(x.price);
+    }
+  });
+
+  const totalPaidSell = [];
+  for (const [key, value] of Object.entries(totalPaid)) {
+    totalPaidSell.push(value);
+  }
+
+  console.log(totalPaid);
 
   const priceData = {
-    labels: finalOrderDates,
+    labels: dates,
     datasets: [
       {
         label: 'Total Amount',
-        data: priceList,
+        data: totalPrice,
         borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
         backgroundColor: ['#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06', '#00ad06'],
       },
       {
         label: 'Paid Amount',
-        data: paidPriceList,
+        data: totalPaidSell,
         borderColor: ['#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00', '#ff6f00'],
         backgroundColor: ['#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad', '#0300ad'],
       },
@@ -109,15 +149,14 @@ const OrderGraph = () => {
   const priceOptions = {
     title: {
       display: true,
-      text: 'Last 7 Days Revenue',
+      text: 'Revenue',
     },
   };
 
-  // for pie chart
-
+  //   Pie chart details
   let totalRevenue = 0;
   let paid = 0;
-  data.forEach(order => {
+  orders.forEach(order => {
     totalRevenue += parseInt(order.price);
     if (order.payment === 'Paid') {
       paid += parseInt(order.price);
@@ -138,6 +177,8 @@ const OrderGraph = () => {
 
   return (
     <>
+      <RangePicker style={{ margin: ' 1rem 32vw' }} onChange={handleChange} />
+      <br />
       <Row gutter={16}>
         <Col className="gutter-row" span={12} style={{ border: '1px dashed #b8b8b8' }}>
           {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Order Graph</h1> */}
