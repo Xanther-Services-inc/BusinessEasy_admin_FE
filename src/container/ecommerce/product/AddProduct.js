@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Input, InputNumber, Select, Upload, message, Space, Typography } from 'antd';
+import { Row, Col, Form, Input, InputNumber, Select, Upload, message, Space, Typography, Image } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import FeatherIcon from 'feather-icons-react';
 import { Cards } from '../../../components/cards/frame/cards-frame';
@@ -35,6 +35,8 @@ const AddProduct = () => {
       }
     },
   };
+
+  console.log(fields.image);
 
   const [selectEl, setSelectEl] = useState(false);
 
@@ -109,7 +111,8 @@ const AddProduct = () => {
                                   <Upload {...props}>
                                     <span>Product Image: </span>
                                     <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                                  </Upload>{' '}
+                                  </Upload>
+                                  {fields.image ? <Image width={200} src={fields.image} /> : null}
                                   {/* test  */}
                                   <Cards title="Add Form Fields">
                                     <Form.List name="users">
