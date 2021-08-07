@@ -225,7 +225,9 @@ const ProjectDetails = ({ match }) => {
             <Cards headless>
               <h3>Customer Details</h3>
               <hr />
-              <h4>Email: {email}</h4>
+              <h3>
+                <strong>Email:</strong> {email}
+              </h3>
               <div className="state-single">
                 <div>
                   <h3>
@@ -233,7 +235,7 @@ const ProjectDetails = ({ match }) => {
                       details.map(item => {
                         return (
                           <h4>
-                            {item[0]}: {item[1]}
+                            <strong>{item[0]}:</strong> {item[1]}
                           </h4>
                         );
                       })}
