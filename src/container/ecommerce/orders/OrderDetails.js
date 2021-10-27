@@ -34,6 +34,8 @@ const ProjectDetails = ({ match }) => {
     fetchEmp();
   }, []);
 
+  console.log(empList);
+
   const [orderDetails, setOrderDetails] = useState({});
 
   useEffect(() => {
@@ -74,6 +76,8 @@ const ProjectDetails = ({ match }) => {
     };
     fetchMessage();
   }, []);
+
+  console.log(messages);
 
   const [form] = Form.useForm();
   const [fileName, setFileName] = useState('');
@@ -164,7 +168,7 @@ const ProjectDetails = ({ match }) => {
   const statusOptions = [];
 
   order_steps &&
-    order_steps.map(step => {
+    order_steps.split(',').map(step => {
       return statusOptions.push({
         value: step,
         label: step,
@@ -276,29 +280,30 @@ const ProjectDetails = ({ match }) => {
                   boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
                 }}
               >
-                {messages.map(message => (
-                  <>
-                    <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
-                      <div>
-                        <p style={{ color: '#0a8dff' }}>@{message.user}</p>
-                        {message.message !== 'undefined' ? <p>{message.message}</p> : null}
+                {messages &&
+                  messages.map(message => (
+                    <>
+                      <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
+                        <div>
+                          <p style={{ color: '#0a8dff' }}>@{message.user}</p>
+                          {message.message !== 'undefined' ? <p>{message.message}</p> : null}
 
-                        {message.doc_key !== 'sample.jpg' ? (
-                          <Link
-                            to={{ pathname: `https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}` }}
-                            target="_blank"
-                          >
-                            <img
-                              src={`https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}`}
-                              style={{ height: '7rem', width: '60%' }}
-                            ></img>
-                          </Link>
-                        ) : null}
+                          {message.doc_key !== 'sample.jpg' ? (
+                            <Link
+                              to={{ pathname: `https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}` }}
+                              target="_blank"
+                            >
+                              <img
+                                src={`https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}`}
+                                style={{ height: '7rem', width: '60%' }}
+                              ></img>
+                            </Link>
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
-                    <br />
-                  </>
-                ))}
+                      <br />
+                    </>
+                  ))}
               </Scrollbars>
             </Cards>
             {/* new */}
