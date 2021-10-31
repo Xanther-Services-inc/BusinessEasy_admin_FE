@@ -48,7 +48,7 @@ const ProjectDetails = ({ match }) => {
     fetchData();
   }, []);
 
-  const {
+  var {
     id,
     email,
     payment,
@@ -60,6 +60,10 @@ const ProjectDetails = ({ match }) => {
     product_id,
     order_steps,
   } = orderDetails;
+
+  console.log(orderDetails);
+
+  order_steps = order_steps ? order_steps.split(',') : [];
 
   const image = _.get(orderDetails, 'image');
   const order_data = _.get(orderDetails, 'order_data');
@@ -167,13 +171,15 @@ const ProjectDetails = ({ match }) => {
   // OrderStatus change select options
   const statusOptions = [];
 
-  order_steps &&
-    order_steps.split(',').map(step => {
+  if (order_steps) {
+    order_steps.map(step => {
       return statusOptions.push({
         value: step,
         label: step,
       });
     });
+  }
+  console.log(order_steps);
 
   console.log(statusOptions);
   // const statusOptions = [
@@ -379,7 +385,7 @@ const ProjectDetails = ({ match }) => {
                   </div>
                 </div>
                 {/* Order Steps  */}
-                <Steps size="small" current={order_steps && order_steps.indexOf(order_status)}>
+                <Steps size="small" current={order_steps ? order_steps.indexOf(order_status) : 0}>
                   {order_steps &&
                     order_steps.map(step => {
                       return <Step title={step} />;
