@@ -71,7 +71,6 @@ const ProjectDetails = ({ match }) => {
   console.log(orderDetails);
 
   const [messages, setMessages] = useState([]);
-
   useEffect(() => {
     const fetchMessage = async () => {
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/messages?order_id=${match.params.id}`);
@@ -97,12 +96,12 @@ const ProjectDetails = ({ match }) => {
     fd.append('user', 'Employee');
 
     const config = {
-      headers: { 'content-type': 'multipart/form-data' },
+      headers: { 'content-type': 'application/json' },
     };
 
     const url = `${process.env.REACT_APP_API}/api/v1/message/send`;
-
-    const { data } = await axios.post(url, fd, config);
+    console.log(fileName)
+    const { data } = await axios.post(url, {message: values.message, order_id: id, img:fileName, user: "Employee"}, config);
     window.location.reload();
   };
 
@@ -294,7 +293,7 @@ const ProjectDetails = ({ match }) => {
                           <p style={{ color: '#0a8dff' }}>@{message.user}</p>
                           {message.message !== 'undefined' ? <p>{message.message}</p> : null}
 
-                          {message.doc_key !== 'sample.jpg' ? (
+                          { message.doc_key && message.doc_key !== 'sample.jpg' ? (
                             <Link
                               to={{ pathname: `https://order-message.s3.us-east-2.amazonaws.com/${message.doc_key}` }}
                               target="_blank"
