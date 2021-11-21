@@ -22,9 +22,9 @@ const { Step } = Steps;
 const ProjectDetails = ({ match }) => {
   const userLogin = useSelector(state => state.auth);
   const { login } = userLogin;
-  const [state, setState ] = useState({
-    doc_key:''
-  })
+  const [state, setState] = useState({
+    doc_key: '',
+  });
   const [empList, setEmpList] = useState([]);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +84,7 @@ const ProjectDetails = ({ match }) => {
     };
     fetchMessage();
   }, []);
-  console.log("from order page message", messages)
+  console.log('from order page message', messages);
 
   console.log(messages);
 
@@ -129,11 +129,15 @@ const ProjectDetails = ({ match }) => {
     const config = {
       headers: { 'content-type': 'application/json' },
     };
-    console.log("on submit",state.doc_key)
+    console.log('on submit', state.doc_key);
 
     const url = `${process.env.REACT_APP_API}/api/v1/message/send`;
-    console.log(fileName)
-    const { data } = await axios.post(url, {message: values.message, order_id: id, img:state.doc_key, user: "Employee"}, config);
+    console.log(fileName);
+    const { data } = await axios.post(
+      url,
+      { message: values.message, order_id: id, img: state.doc_key, user: 'Employee' },
+      config,
+    );
     window.location.reload();
   };
 
@@ -330,7 +334,7 @@ const ProjectDetails = ({ match }) => {
                           <p style={{ color: '#0a8dff' }}>@{message.user}</p>
                           {message.message !== 'undefined' ? <p>{message.message}</p> : null}
 
-                          { message.image && message.image !== 'sample.jpg' ? (
+                          {message.image && message.image !== 'sample.jpg' ? (
                             <Link
                               to={{ pathname: `https://be-message-bucket.s3.us-east-2.amazonaws.com/${message.image}` }}
                               target="_blank"
