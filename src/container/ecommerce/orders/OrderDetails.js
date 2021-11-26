@@ -288,36 +288,8 @@ const ProjectDetails = ({ match }) => {
                 </div>
               </div>
             </Cards>
-            {/* new */}
-            <Cards headless>
-              <h3>Make a Conversation</h3>
-              <hr />
-              <Form onFinish={handleSubmit} form={form}>
-                <Row gutter={30}>
-                  <Col md={20} xs={20}>
-                    <Form.Item name="message">
-                      <Input placeholder="Type your message.." />
-                    </Form.Item>
-                  </Col>
-                  <Col md={20} xs={20}>
-                    {/* <input {...props} fileName="image" name="img" onChange={onChangeFile} type="file" /> */}
-                    <Upload {...props}>
-                      {/* <FeatherIcon icon="paperclip" size={16} /> */}
-                      <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
-                    <br />
-                  </Col>
-                </Row>
-                <div className="sDash_form-action mt-20">
-                  <Button htmlType="submit" type="primary" size="large">
-                    Send
-                  </Button>
-                </div>
-              </Form>
-            </Cards>
-            {/* new */}
-            {/* new */}
-            <Cards title="Conversations">
+                        {/* new */}
+                        <Cards title="Conversations">
               <Scrollbars
                 style={{
                   width: '17rem',
@@ -353,6 +325,42 @@ const ProjectDetails = ({ match }) => {
               </Scrollbars>
             </Cards>
             {/* new */}
+            {/* new */}
+            <Cards headless>
+              <h3>Make a Conversation</h3>
+              <hr />
+              <Form onFinish={handleSubmit} form={form}>
+                <Row gutter={30}>
+                  <Col md={20} xs={20}>
+                    <Form.Item label="Message"
+                        name="message"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Message!",
+                          },
+                        ]} >
+                      <Input placeholder="Type your message.." />
+                    </Form.Item>
+                  </Col>
+                  <Col md={20} xs={20}>
+                    {/* <input {...props} fileName="image" name="img" onChange={onChangeFile} type="file" /> */}
+                    <Upload {...props}>
+                      {/* <FeatherIcon icon="paperclip" size={16} /> */}
+                      <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
+                    <br />
+                  </Col>
+                </Row>
+                <div className="sDash_form-action mt-20">
+                  <Button htmlType="submit" type="primary" size="large">
+                    Send
+                  </Button>
+                </div>
+              </Form>
+            </Cards>
+            {/* new */}
+
           </Col>
           <Col xxl={12} xl={16} xs={24}>
             <div className="about-project-wrapper">
