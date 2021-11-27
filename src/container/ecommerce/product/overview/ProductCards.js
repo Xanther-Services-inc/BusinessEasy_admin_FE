@@ -44,7 +44,8 @@ const ProductCards = ({ product }) => {
             {title}
           </Heading>
           <p className="product-single-price">
-            <span className="product-single-price__new">${price}</span>
+            <span className="product-single-price__new"> Rs. {price}</span>
+            {console.log(price)}
           </p>
 
           <div className="product-single-action"></div>

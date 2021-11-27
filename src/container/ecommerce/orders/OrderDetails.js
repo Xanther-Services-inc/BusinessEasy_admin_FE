@@ -299,7 +299,7 @@ const ProjectDetails = ({ match }) => {
                 }}
               >
                 {messages &&
-                  messages.map(message => (
+                  messages.reverse().map(message => (
                     <>
                       <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
                         <div>
