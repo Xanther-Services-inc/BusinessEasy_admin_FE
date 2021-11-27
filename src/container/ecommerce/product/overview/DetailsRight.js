@@ -32,7 +32,7 @@ const DetailsRight = ({ product }) => {
             </Heading>
             <Heading className="pdbr__new-price" as="h3">
               <u className="pdbr__currency">Price:</u>
-              <span className="pdbr__price"> {price} Rs.</span>
+              <span className="pdbr__price"> Rs. {price} </span>
             </Heading>
 
             <p className="pdbr__desc">

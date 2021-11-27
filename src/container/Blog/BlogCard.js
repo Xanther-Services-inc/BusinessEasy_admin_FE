@@ -21,7 +21,7 @@ const BlogCard = ({ title, desc, doc_key, id, author, slug }) => {
             <img
               alt={title}
               style={{ height: 280 }}
-              src={`https://businesseasy-blog.s3.us-east-2.amazonaws.com/${doc_key}`}
+              src={`https://business-easy-bucket.s3.us-east-2.amazonaws.com/${doc_key}`}
             />
           }
           // actions={[<DeleteOutlined onClick={() => handleDelete(slug)} key="delete" style={{ color: '#a84832' }} />]}

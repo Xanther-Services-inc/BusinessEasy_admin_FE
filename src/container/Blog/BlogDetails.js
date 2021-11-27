@@ -73,7 +73,7 @@ const BlogDetails = () => {
           <br />
           <Image
             style={{ cursor: 'pointer', height: '16vh', width: '20vw' }}
-            src={`https://businesseasy-blog.s3.us-east-2.amazonaws.com/${doc_key}`}
+            src={`https://business-easy-bucket.s3.us-east-2.amazonaws.com/${doc_key}`}
           />
           <br />
           <br />

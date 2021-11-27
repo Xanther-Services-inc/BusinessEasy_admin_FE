@@ -22,9 +22,9 @@ const { Step } = Steps;
 const ProjectDetails = ({ match }) => {
   const userLogin = useSelector(state => state.auth);
   const { login } = userLogin;
-  const [state, setState ] = useState({
-    doc_key:''
-  })
+  const [state, setState] = useState({
+    doc_key: '',
+  });
   const [empList, setEmpList] = useState([]);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +84,7 @@ const ProjectDetails = ({ match }) => {
     };
     fetchMessage();
   }, []);
-  console.log("from order page message", messages)
+  console.log('from order page message', messages);
 
   console.log(messages);
 
@@ -129,11 +129,15 @@ const ProjectDetails = ({ match }) => {
     const config = {
       headers: { 'content-type': 'application/json' },
     };
-    console.log("on submit",state.doc_key)
+    console.log('on submit', state.doc_key);
 
     const url = `${process.env.REACT_APP_API}/api/v1/message/send`;
-    console.log(fileName)
-    const { data } = await axios.post(url, {message: values.message, order_id: id, img:state.doc_key, user: "Employee"}, config);
+    console.log(fileName);
+    const { data } = await axios.post(
+      url,
+      { message: values.message, order_id: id, img: state.doc_key, user: 'Employee' },
+      config,
+    );
     window.location.reload();
   };
 
@@ -284,6 +288,43 @@ const ProjectDetails = ({ match }) => {
                 </div>
               </div>
             </Cards>
+                        {/* new */}
+                        <Cards title="Conversations">
+              <Scrollbars
+                style={{
+                  width: '17rem',
+                  height: '20rem',
+                  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+                  borderRadius:'10px'
+                }}
+              >
+                {messages &&
+                  messages.reverse().map(message => (
+                    <>
+                      <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
+                        <div>
+                          <p style={{ color: '#0a8dff' }}>@{message.user}</p>
+                          {message.message !== 'undefined' ? <p>{message.message}</p> : null}
+
+                          {message.image && message.image !== 'sample.jpg' ? (
+                            <Link
+                              to={{ pathname: `https://be-message-bucket.s3.us-east-2.amazonaws.com/${message.image}` }}
+                              target="_blank"
+                            >
+                              <img
+                                src={`https://be-message-bucket.s3.us-east-2.amazonaws.com/${message.image}`}
+                                style={{ height: '7rem', width: '60%' }}
+                              ></img>
+                            </Link>
+                          ) : null}
+                        </div>
+                      </div>
+                      <br />
+                    </>
+                  ))}
+              </Scrollbars>
+            </Cards>
+            {/* new */}
             {/* new */}
             <Cards headless>
               <h3>Make a Conversation</h3>
@@ -291,7 +332,14 @@ const ProjectDetails = ({ match }) => {
               <Form onFinish={handleSubmit} form={form}>
                 <Row gutter={30}>
                   <Col md={20} xs={20}>
-                    <Form.Item name="message">
+                    <Form.Item label="Message"
+                        name="message"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Message!",
+                          },
+                        ]} >
                       <Input placeholder="Type your message.." />
                     </Form.Item>
                   </Col>
@@ -312,42 +360,7 @@ const ProjectDetails = ({ match }) => {
               </Form>
             </Cards>
             {/* new */}
-            {/* new */}
-            <Cards title="Conversations">
-              <Scrollbars
-                style={{
-                  width: '21rem',
-                  height: '20rem',
-                  boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                }}
-              >
-                {messages &&
-                  messages.map(message => (
-                    <>
-                      <div style={message.user === 'Employee' ? rightMessage : leftMessage}>
-                        <div>
-                          <p style={{ color: '#0a8dff' }}>@{message.user}</p>
-                          {message.message !== 'undefined' ? <p>{message.message}</p> : null}
 
-                          { message.image && message.image !== 'sample.jpg' ? (
-                            <Link
-                              to={{ pathname: `https://be-message-bucket.s3.us-east-2.amazonaws.com/${message.image}` }}
-                              target="_blank"
-                            >
-                              <img
-                                src={`https://be-message-bucket.s3.us-east-2.amazonaws.com/${message.image}`}
-                                style={{ height: '7rem', width: '60%' }}
-                              ></img>
-                            </Link>
-                          ) : null}
-                        </div>
-                      </div>
-                      <br />
-                    </>
-                  ))}
-              </Scrollbars>
-            </Cards>
-            {/* new */}
           </Col>
           <Col xxl={12} xl={16} xs={24}>
             <div className="about-project-wrapper">
