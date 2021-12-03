@@ -22,8 +22,8 @@ const OrderGraph = () => {
     let year1 = data1.getFullYear();
     let year2 = data2.getFullYear();
 
-    let sDate = month1 + '/' + day1 + '/' + year1;
-    let eDate = month2 + '/' + day2 + '/' + year2;
+    let sDate =  day1 + '/' + month1  + '/' + year1;
+    let eDate = day2 + '/' + month2 + '/' + year2;
     setDateOne(sDate);
     setDateTwo(eDate);
   };
@@ -63,11 +63,13 @@ const OrderGraph = () => {
   const values = [];
 
   for (const [key, value] of Object.entries(counts)) {
-    dates.push(key);
+    const dateArray = key.split('/')
+    const dateNew = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2]
+    dates.push(dateNew);
     values.push(value);
   }
 
-  console.log(dates);
+  console.log("testing dates",dates);
   console.log(values);
 
   // for total order
