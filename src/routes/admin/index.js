@@ -24,6 +24,7 @@ const AddFaq = lazy(() => import('../../container/FAQ/AddFaq'));
 const Faqs = lazy(() => import('../../container/FAQ/Grid'));
 const FaqDetails = lazy(() => import('../../container/FAQ/FaqDetails'));
 import TeamDetails from '../../container/pages/overview/TeamDetails';
+import EditBlog from '../../container/Blog/EditBlog';
 
 const Team = lazy(() => import('../../container/pages/Team'));
 const AddUser = lazy(() => import('../../container/pages/AddUsers'));
@@ -89,6 +90,7 @@ const Admin = () => {
             <Route path={`${path}/create-blog`} component={CreateBlog} />
             <Route path={`${path}/blogs`} component={AllBlogs} />
             <Route path={`${path}/blog/:slug`} component={BlogDetails} />
+            <Route path={`${path}/edit-blog/:slug`} component={EditBlog} />
           </>
         ) : isLoggedInJsonObject && isLoggedInJsonObject.type === 'b_manager' ? (
           <>
