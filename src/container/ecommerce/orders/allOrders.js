@@ -29,11 +29,23 @@ const Orders = () => {
       setFilteredOrders(data);
     };
     fetchData();
+  
   }, []);
-
+  console.log("==BEFORESORT========>",orders)
   // const history = useHistory();
-
-  console.log(orders);
+  const arr=[{startDate:'11-09-2020'},{startDate:'11-12-2021'},{startDate:'11-02-2021'}]
+  const sortByDate = arr => {
+    const sorter = (a, b) => {
+      console.log("a",a,"b",b)
+       return new Date().getTime() - new Date(b.startDate).getTime();
+    }
+    arr.sort(sorter);
+ };
+//  sortByDate(orders);
+//  sortByDate(arr);
+//  console.log(arr)
+let sortedCars1 = orders.sort((a, b) => new Date(...b.startDate.split('/').reverse()) - new Date(...a.startDate.split('/').reverse()));
+  console.log("Sorted===",sortedCars1);
 
   const filterItem = payment => {
     const filteredData = filteredOrders.filter(order => {

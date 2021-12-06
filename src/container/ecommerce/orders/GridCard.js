@@ -12,8 +12,8 @@ const GridCard = ({ values }) => {
 
   const image = _.get(values, 'image.image');
   const order_data = _.get(values, 'order_data');
-  console.log(order_data);
-  console.log(values);
+  // console.log(order_data);
+  // console.log(values);
 
   return (
     <ProjectCard>

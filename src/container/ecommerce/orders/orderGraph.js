@@ -63,9 +63,9 @@ const OrderGraph = () => {
   const values = [];
 
   for (const [key, value] of Object.entries(counts)) {
-    const dateArray = key.split('/')
-    const dateNew = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2]
-    dates.push(dateNew);
+    // const dateArray = key.split('/')
+    // const dateNew = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2]
+    dates.push(key);
     values.push(value);
   }
 
@@ -115,7 +115,14 @@ const OrderGraph = () => {
     totalPrice.push(value);
   }
 
-  console.log(totalPrice);
+  var sumOftotalPrice = 0;
+  if(totalPrice.length !== 0){
+    for (let index = 0; index < totalPrice.length; index++) {
+       sumOftotalPrice = sumOftotalPrice+totalPrice[index];
+      
+    }
+  }
+  console.log(totalPrice,sumOftotalPrice);
 
   const totalPaid = {};
   orders.forEach(function(x) {
@@ -164,17 +171,17 @@ const OrderGraph = () => {
       paid += parseInt(order.price);
     }
   });
-
+  console.log(sumOftotalPrice)
   const pieData = {
     labels: ['Paid', 'Yet To Be Paid'],
     datasets: [
       {
-        data: [paid, totalRevenue - paid],
+        data: [paid, sumOftotalPrice - paid],
         backgroundColor: ['#fff200', '#ff0000'],
         borderColor: '#fff',
         borderWidth: 1,
-      },
-    ],
+      }
+    ]
   };
 
   return (
@@ -192,7 +199,17 @@ const OrderGraph = () => {
         </Col>
         <Col className="gutter-row" span={24} style={{ border: '1px dashed #b8b8b8' }}>
           {/* <h1 style={{textAlign: 'center', textDecoration: 'underline', paddingTop: '5px', fontSize: '2rem'}}>Revenue Chart</h1> */}
-          <Pie height={200} data={pieData} height="100%" />
+          <Pie
+           height={200} 
+           data={pieData} 
+           height="100%"
+           options={{
+            legend:{
+            display:true,
+            // position:'left'
+            }
+        }}
+           />
           <br />
         </Col>
       </Row>
