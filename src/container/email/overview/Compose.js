@@ -79,14 +79,14 @@ const handleChange = (value) => {
         <Form.Item style={{marginLeft: '1rem'}} name='title' rules={[{ required: true }]}>
     <Input style={{paddingLeft: '1rem'}} placeholder='Issue Title' />
         </Form.Item>
-        <Form.Item style={{marginLeft: '1rem'}} name='issue_category' rules={[{ required: true }]}>
+        {/* <Form.Item style={{marginLeft: '1rem'}} name='issue_category' rules={[{ required: true }]}>
         <Select style={{paddingLeft: '1rem'}} defaultValue="" onChange={handleChange}>
           <Select.Option value=''>Issue Category</Select.Option>
           <Select.Option value='Issue 1'>Issue 1</Select.Option>
           <Select.Option value='Issue 2'>Issue 2</Select.Option>
           <Select.Option value='Issue 3'>Issue 3</Select.Option>
         </Select>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item style={{marginLeft: '1rem'}} name='details' rules={[{ required: true }]}>
         <Input.TextArea style={{paddingLeft: '1rem'}} rows={3} placeholder='Issue Details' />
         </Form.Item>
