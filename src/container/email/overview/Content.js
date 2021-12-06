@@ -70,8 +70,8 @@ const Content = () => {
 
     fetchData();
   }, []);
-
-  console.log(issues);
+  issues.sort((a, b) => parseInt(b.id) - parseInt(a.id));
+  console.log("issues",issues);
 
   const data = [];
   if (issues !== undefined)
