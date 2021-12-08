@@ -20,8 +20,8 @@ const ExportToCSV = () => {
     let year1 = data1.getFullYear();
     let year2 = data2.getFullYear();
 
-    let sDate = month1 + '/' + day1 + '/' + year1;
-    let eDate = month2 + '/' + day2 + '/' + year2;
+    let sDate = day1 + '/' + month1 + '/' + year1;
+    let eDate = day2 + '/' + month1 + '/' + year2;
     setDateOne(sDate);
     setDateTwo(eDate);
     // console.log(sDate);

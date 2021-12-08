@@ -50,6 +50,8 @@ const OrderGraph = () => {
     };
     fetchData();
   }, [dateOne, dateTwo]);
+  orders.sort((a, b) => new Date(...a.startDate.split('/').reverse()) - new Date(...b.startDate.split('/').reverse()));
+// setOrders(orders)
   console.log(orders);
 
   var counts = {};
@@ -63,8 +65,6 @@ const OrderGraph = () => {
   const values = [];
 
   for (const [key, value] of Object.entries(counts)) {
-    // const dateArray = key.split('/')
-    // const dateNew = dateArray[1] + '/' + dateArray[0] + '/' + dateArray[2]
     dates.push(key);
     values.push(value);
   }
